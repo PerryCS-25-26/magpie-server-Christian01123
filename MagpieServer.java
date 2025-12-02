@@ -2,7 +2,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.Date;
@@ -33,7 +32,7 @@ public static void main (String[] args) {
 
     // Create and start a new FileServer to handle file requests
     try {
-        final HttpServer server = buildFileServer(port, rootFolder);
+        final HttpServer server = FileServer.buildFileServer(port, rootFolder);
         server.start();
     }
     catch (IOException e) {
