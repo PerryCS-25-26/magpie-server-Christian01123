@@ -66,15 +66,15 @@ public class Magpie
         {
                 response = transformIWantStatement(statement);
         }
-        else if (findKeyword(statement, "you") >= 0 
-                 && findKeyword(statement, "me") > findKeyword(statement, "you"))
-        {
-            response = transformYouMeStatement(statement);
-        }
         else if (findKeyword(statement, "I") >= 0 
                  && findKeyword(statement, "you") > findKeyword(statement, "I"))
         {
             response = transformIYouStatement(statement);
+        }
+        else if (findKeyword(statement, "you") >= 0 
+                 && findKeyword(statement, "me") > findKeyword(statement, "you"))
+        {
+            response = transformYouMeStatement(statement);
         }
         else
         {
@@ -87,39 +87,23 @@ public class Magpie
      * Pick a default response to use if nothing else fits.
      * @return a non-committal string
      */
-    private String getRandomResponse()
+    private String getRandomResponse ()
     {
-        final int NUMBER_OF_RESPONSES = 6;
-        double r = Math.random();
-        int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
-        String response = "";
-
-        if (whichResponse == 0)
-        {
-            response = "Interesting, tell me more.";
-        }
-        else if (whichResponse == 1)
-        {
-            response = "Hmmm.";
-        }
-        else if (whichResponse == 2)
-        {
-            response = "Do you really think so?";
-        }
-        else if (whichResponse == 3)
-        {
-            response = "You don't say.";
-        }
-        else if (whichResponse == 4)
-        {
-            response = "Nice.";
-        }
-        else if (whichResponse == 5)
-        {
-            response = "Very, very cool.";
-        }
-
-        return response;
+        final String[] randomResponses = {
+            "Interesting, tell me more!!",
+            "Hmmm.",
+            "Do you really think so?",
+            "You don't say.",
+            "Rollingu",
+            "Oh My God!",
+            "I don't care",
+            "*cough* *cough*",
+            "Random Response",
+            "Tell me less, I don't care",
+        };
+     
+        int r = (int)(Math.random() * randomResponses.length);
+        return randomResponses[r];
     }
 
     /**
@@ -257,18 +241,12 @@ public class Magpie
 
     private String transformIYouStatement(String statement)
     {
-        // Remove the final period, if there is one
-        statement = statement.trim();
-        String lastChar = statement.substring(statement.length() - 1);
-        if (lastChar.equals("."))
-        {
-            statement = statement.substring(0, statement.length() - 1);
-        }
+        String i = "I";
+        String you = "you";
+        int psnOfI = findKeyword (statement, i, 1);
+        int psnOfYou = findKeyword (statement, you, psnOfI + you.length());
 
-        // Transform the statement into a question
-        String kw = "I want ";
-        int psn = findKeyword (statement, kw);
-        String restOfStatement = statement.substring(psn + kw.length()).trim();
+        String restOfStatement = statement.substring(psnOfI + you.length(), psnOfYou).trim();
         return "Why do you " + restOfStatement + " me?";
     }
 }
